@@ -13,8 +13,8 @@ public class ShopMainPage extends AbstractPage {
 
     private final static String HOMEPAGE_URL="https://www.oma.by";
     private final static String SEARCH_FIELD="js-search-input";
-    private final static String SEARCH_BUTTON="js-btn-search";
-    private final static String SEARCH_WORD="h1";
+    private final static String SEARCH_BUTTON="header-search-form";
+    private final static String SEARCH_WORD="//*[@id=\"searchForm\"]/div[4]/div/div[1]/div[1]/a";
 
 
     @FindBy(className = SEARCH_FIELD)
@@ -23,7 +23,7 @@ public class ShopMainPage extends AbstractPage {
     @FindBy(className = SEARCH_BUTTON)
     private WebElement searchButton;
 
-    @FindBy(className = SEARCH_WORD)
+    @FindBy(xpath = SEARCH_WORD)
     private WebElement searchWord;
 
     public ShopMainPage(WebDriver driver) {
@@ -36,10 +36,10 @@ public class ShopMainPage extends AbstractPage {
         return this;
     }
 
-    public ShopMainPage wrongSearchWord(SearchShopHomePage params) {
+    public ShopMainPage wrongSearchWord(String searchword) {
         new WebDriverWait(driver,WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.visibilityOf(searchField));
-        searchField.sendKeys(params.getSearchWord());
-        searchButton.click();
+        searchField.sendKeys(searchword);
+        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
         return new ShopMainPage(driver);
     }
 

@@ -6,17 +6,16 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pageobject.SearchShopHomePage;
 import pageobject.ShopMainPage;
+import pageobject.SignInPage;
 
 public class ShopMainPageTest {
-    private String searchWord = "дрэль";
-    private String correctedWordMessage = "дрель";
     private WebDriver driver;
 
     @BeforeMethod(alwaysRun = true)
     public void browserSetup(){
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
     }
 
     @AfterMethod(alwaysRun = true)
@@ -27,7 +26,13 @@ public class ShopMainPageTest {
 
     @Test
     public void correctSearchWordTest() {
-        SearchShopHomePage params = new SearchShopHomePage(searchWord, correctedWordMessage);
-        Assert.assertEquals(new ShopMainPage(driver).openPage().wrongSearchWord(params).getWordCorrected().trim(), "Результаты по запросу «дрель»");
+        Assert.assertEquals(new ShopMainPage(driver).openPage().wrongSearchWord("дрэль").getWordCorrected().trim(), "Результаты по запросу «дрель»");
     }
+
+    @Test
+    public void registrationValidationTest() throws InterruptedException {
+        String error = new SignInPage(driver).openPage().openRegistration().registration("Alina","123456789","wrongemail.com").getInvalidRegistrationError();
+        Assert.assertEquals(error, "Email не корректен");
+    }
+
 }
