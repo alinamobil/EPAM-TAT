@@ -6,7 +6,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ShopMainPage extends AbstractPage {
+
+    private final Logger logger = LogManager.getRootLogger();
 
     @FindBy(className = "js-search-input")
     private WebElement searchField;
@@ -30,6 +35,7 @@ public class ShopMainPage extends AbstractPage {
     @Override
     public ShopMainPage openPage() {
         driver.navigate().to("https://www.oma.by");
+        logger.info("Main page opened");
         return this;
     }
 
@@ -48,6 +54,7 @@ public class ShopMainPage extends AbstractPage {
     public String getSalesFieldColor(){
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.visibilityOf(salesHeader));
         salesHeader.click();
+        logger.info("Getting background color");
         return redSalesField.getCssValue("background-color");
     }
 

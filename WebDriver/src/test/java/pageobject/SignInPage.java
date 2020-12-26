@@ -1,5 +1,7 @@
 package pageobject;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +14,7 @@ import java.time.Duration;
 
 public class SignInPage extends AbstractPage{
 
+    private final Logger logger = LogManager.getRootLogger();
     private final static String EMAIL_ERROR = ".js_form_row_d5aecc26cfa2335ea63b0b1591b9b6b00 > span:nth-child(3)";
 
     @FindBy(id = "field_218dad245a1324b2aa93093438eeb1100")
@@ -39,12 +42,14 @@ public class SignInPage extends AbstractPage{
         home.openPage();
         driver.findElement(By.cssSelector(".dropdown-group__gray-arrow > a")).click();
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.presenceOfElementLocated(By.className("page-title_title-cell")));
+        logger.info("SignIn page opened");
         return this;
     }
 
     public SignInPage openRegistration() {
         driver.findElement(By.cssSelector(".register-section_form-col > form > div > a")).click();
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.presenceOfElementLocated(By.className("page-title_title-cell")));
+        logger.info("Registration page opened");
         return this;
     }
 
@@ -60,6 +65,7 @@ public class SignInPage extends AbstractPage{
                 .withMessage("Element was not found")
                 .until(ExpectedConditions.visibilityOf(submitRegistration))
                 .click();
+        logger.info("Registration attempt committed");
         return this;
     }
 
