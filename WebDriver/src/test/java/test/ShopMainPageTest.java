@@ -1,32 +1,11 @@
 package test;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageobject.ShopMainPage;
 import pageobject.SignInPage;
 
-public class ShopMainPageTest {
-    private WebDriver driver;
-
-    @BeforeMethod(alwaysRun = true)
-    public void browserSetUp() {
-        System.setProperty("webdriver.chrome.driver", "D:\\TAT\\WebDriver\\chromedriver_win32\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
-        options.addArguments("--disable-gpu");
-        driver = new ChromeDriver(options);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void browserTearDown(){
-        driver.quit();
-        driver = null;
-    }
+public class ShopMainPageTest extends CommonConditions {
 
     @Test
     public void checkSalesField() {
