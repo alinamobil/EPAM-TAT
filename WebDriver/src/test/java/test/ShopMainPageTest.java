@@ -1,9 +1,11 @@
 package test;
 
+import model.User;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pageobject.ShopMainPage;
 import pageobject.SignInPage;
+import service.UserCreator;
 
 public class ShopMainPageTest extends CommonConditions {
 
@@ -15,7 +17,8 @@ public class ShopMainPageTest extends CommonConditions {
 
     @Test
     public void registrationValidationTest() throws InterruptedException {
-        String error = new SignInPage(driver).openPage().openRegistration().registration("Alina","123456789","wrongemail.com").getInvalidRegistrationError();
+        User user = UserCreator.getWrongEmail();
+        String error = new SignInPage(driver).openPage().openRegistration().registration(user.getName(), user.getPhone(), user.getEmail()).getInvalidRegistrationError();
         Assert.assertEquals(error, "Email не корректен");
     }
 
