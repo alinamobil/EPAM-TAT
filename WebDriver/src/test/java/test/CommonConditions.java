@@ -1,6 +1,6 @@
 package test;
 
-import Util.TestListener;
+import util.TestListener;
 import driver.DriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;

@@ -16,10 +16,10 @@ public class ShopMainPageTest extends CommonConditions {
     }
 
     @Test
-    public void registrationValidationTest() throws InterruptedException {
-        User user = UserCreator.getWrongEmail();
-        String error = new SignInPage(driver).openPage().openRegistration().registration(user.getName(), user.getPhone(), user.getEmail()).getInvalidRegistrationError();
-        Assert.assertEquals(error, "Email не корректен");
+    public void favouriteFunctionalTest() {
+        User user = UserCreator.withCredentialsFromProperty();
+        String  checked = new SignInPage(driver).openPage().signIn(user.getEmail(), user.getPassword()).addInFavourites().checkIsFavourite();
+        Assert.assertEquals(checked,"1");
     }
 
 }

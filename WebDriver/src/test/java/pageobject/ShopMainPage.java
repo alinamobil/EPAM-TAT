@@ -1,13 +1,17 @@
 package pageobject;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wait.CustomWaits;
 
 public class ShopMainPage extends AbstractPage {
 
@@ -28,6 +32,21 @@ public class ShopMainPage extends AbstractPage {
     @FindBy(xpath = "//*[@class=\"catalog-grid js-to-max-height-wrap js_catalog_list\"]/div[1]/div[2]/span")
     private WebElement redSalesField;
 
+    @FindBy(xpath = "//*[@class=\"js_insertAfterAjaxLazyLoad\"]/div[1]/div[1]/a")
+    private WebElement goodsBlock;
+
+    @FindBy(xpath = "//*[@class=\"product-rating-code\"]/div[1]/div[1]")
+    private WebElement addToFavouriteButton;
+
+    @FindBy(xpath = "//*[@class=\"small-dropdown_btn-row-alt\"]/div/div[2]/button")
+    private WebElement commitAddToFavouriteButton;
+
+    @FindBy(xpath = "//*[@class=\"basket-table-section_header\"]/sup")
+    private WebElement numberOfFavourites;
+
+    @FindBy(xpath = "//*[@class=\"basket-product-item_action\"]/div[4]/a")
+    private WebElement deleteFavourite;
+
     public ShopMainPage(WebDriver driver) {
         super(driver);
     }
@@ -39,31 +58,34 @@ public class ShopMainPage extends AbstractPage {
         return this;
     }
 
-//    public ShopMainPage wrongSearchWord(String searchword) {
-//        new WebDriverWait(driver,WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.visibilityOf(searchField));
-//        searchField.sendKeys(searchword);
-//        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS);
-//        return new ShopMainPage(driver);
-//    }
-//
-//    public String getWordCorrected() {
-//        new WebDriverWait(driver,WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.visibilityOf(searchWord));
-//        return searchWord.getText();
-//    }
-
     public String getSalesFieldColor(){
-        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.visibilityOf(salesHeader));
+        CustomWaits.untilPresenceOfElementLocated(driver, salesHeader);
         salesHeader.click();
         logger.info("Getting background color");
         return redSalesField.getCssValue("background-color");
     }
 
-//    public ShopMainPage addInFavourites(){
-//        driver.findElement(By.cssSelector(SALES_HEADER)).click();
-//        Actions action = new Actions(driver);
-//        action.moveToElement(driver.findElement(By.cssSelector(GOODS_BLOCK)));
-//        action.build().perform();
-//        driver.findElement(By.cssSelector(FAVOURITES_FIELD)).click();
-//
-//    }
+    public ShopMainPage addInFavourites(){
+        CustomWaits.untilPresenceOfElementLocated(driver, salesHeader);
+        salesHeader.click();
+        driver.navigate().refresh();
+        goodsBlock.click();
+        CustomWaits.untilPresenceOfElementLocated(driver, "//*[@class=\"product-rating-code\"]");
+        addToFavouriteButton.click();
+        CustomWaits.untilPresenceOfElementLocated(driver, "//*[@class=\"popup_title\"]");
+        driver.findElements(By.xpath("//label[@class=\"checkbox-row\"]")).get(0).click();
+        commitAddToFavouriteButton.click();
+        CustomWaits.untilPresenceOfElementLocated(driver, "//*[@class=\"basket-table-section_header\"]/sup");
+        driver.navigate().refresh();
+        return this;
+    }
+
+    public String checkIsFavourite(){
+        driver.findElement(By.xpath("//*[@class=\"popover-body\"]/div[2]/div/a")).click();
+        String checked = numberOfFavourites.getText();
+        deleteFavourite.click();
+        return checked;
+    }
+
+    ////*[@class="basket-table-section_header"]/sup
 }

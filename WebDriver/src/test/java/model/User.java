@@ -6,16 +6,16 @@ public class User {
     private String name;
     private String phone;
     private String email;
+    private String password;
 
-    public User(String name, String phone, String email) {
+    public User(String name, String phone, String email, String password) {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
@@ -37,20 +37,24 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return name.equals(user.name) &&
-                phone.equals(user.phone) &&
-                email.equals(user.email);
+        return Objects.equals(name, user.name) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, phone, email);
+        return Objects.hash(name, phone, email, password);
     }
 
     @Override
@@ -59,6 +63,7 @@ public class User {
                 "name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

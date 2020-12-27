@@ -32,6 +32,12 @@ public class SignInPage extends AbstractPage{
     @FindBy(id = "close-btn")
     private WebElement bannerButton;
 
+    @FindBy(xpath = "//*[@id=\"register-email\"]")
+    private WebElement signInEmail;
+
+    @FindBy(xpath = "//*[@id=\"register-pass\"]")
+    private WebElement signInPassword;
+
     public SignInPage(WebDriver driver) {
         super(driver);
     }
@@ -69,7 +75,17 @@ public class SignInPage extends AbstractPage{
         return this;
     }
 
-    public String getInvalidRegistrationError() throws InterruptedException {
+    public ShopMainPage signIn(String email, String password) {
+        signInEmail.sendKeys(email);
+        signInPassword.sendKeys(password);
+        driver.findElement(By.xpath("//Button[contains(text(), 'Войти на сайт')]")).click();
+        new WebDriverWait(driver,WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions
+                        .presenceOfElementLocated(By.xpath("//*[@class=\"content-profile\"]")));
+        return new ShopMainPage(driver).openPage();
+    }
+
+    public String getInvalidRegistrationError() {
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS).until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(EMAIL_ERROR), "Email не корректен"));
         return driver.findElement(By.cssSelector(EMAIL_ERROR)).getText();
     }
