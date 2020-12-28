@@ -33,4 +33,10 @@ public class StringUtils {
         }
         return true;
     }
+
+    public static double getCostsRatio(String[] costs) {
+        costs[0] = String.join(".", costs[0].split(","));
+        costs[1] = String.join(".", costs[1].split(","));
+        return Double.parseDouble(costs[1]) / Double.parseDouble(costs[0]);
+    }
 }

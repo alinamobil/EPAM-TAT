@@ -29,7 +29,7 @@ public class ShopMainPage extends AbstractPage {
     @FindBy(xpath = "//*[@class=\"header-menu clearfix\"]/div[2]/div[2]")
     private WebElement salesHeader;
 
-    @FindBy(xpath = "//*[@class=\"catalog-grid js-to-max-height-wrap js_catalog_list\"]/div[1]/div[2]/span")
+    @FindBy(xpath = "//*[@class=\"catalog-grid js-to-max-height-wrap js_catalog_list\"]/div[2]/div[2]/span")
     private WebElement redSalesField;
 
     @FindBy(xpath = "//*[@class=\"js_insertAfterAjaxLazyLoad\"]/div[1]/div[1]/a")
@@ -47,6 +47,12 @@ public class ShopMainPage extends AbstractPage {
     @FindBy(xpath = "//*[@class=\"basket-product-item_action\"]/div[4]/a")
     private WebElement deleteFavourite;
 
+    @FindBy(xpath = "//*[@class=\"count-box_input   js-add-one-box-input\"]")
+    private WebElement amountInput;
+
+    @FindBy(xpath = "//*[@class=\"count-and-btn_btn\"]/button")
+    private WebElement addToBucketButton;
+
     public ShopMainPage(WebDriver driver) {
         super(driver);
     }
@@ -58,17 +64,21 @@ public class ShopMainPage extends AbstractPage {
         return this;
     }
 
-    public String getSalesFieldColor(){
+    public ShopMainPage openSales(){
         CustomWaits.untilPresenceOfElementLocated(driver, salesHeader);
         salesHeader.click();
+        driver.navigate().refresh();
+        return this;
+    }
+
+    public String getSalesFieldColor(){
+        openSales();
         logger.info("Getting background color");
         return redSalesField.getCssValue("background-color");
     }
 
     public ShopMainPage addInFavourites(){
-        CustomWaits.untilPresenceOfElementLocated(driver, salesHeader);
-        salesHeader.click();
-        driver.navigate().refresh();
+        openSales();
         goodsBlock.click();
         CustomWaits.untilPresenceOfElementLocated(driver, "//*[@class=\"product-rating-code\"]");
         addToFavouriteButton.click();
@@ -87,5 +97,19 @@ public class ShopMainPage extends AbstractPage {
         return checked;
     }
 
-    ////*[@class="basket-table-section_header"]/sup
+    public String getActualAmountOfGoods(String amount) {
+        openSales();
+        goodsBlock.click();
+        amountInput.sendKeys(amount);
+        return amountInput.getAttribute("value");
+    }
+
+    public BucketPage addToBucket() {
+        openSales();
+        goodsBlock.click();
+        addToBucketButton.click();
+        CustomWaits.untilPresenceOfElementLocated(driver, "//*[@class=\"js-loyality-card-form buy-catalog\"]/div[2]/div[1]/a");
+        driver.findElement(By.xpath("//*[@class=\"js-loyality-card-form buy-catalog\"]/div[2]/div[1]/a")).click();
+        return new BucketPage(driver);
+    }
 }

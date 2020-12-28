@@ -1,10 +1,12 @@
 package test;
 
+import model.Goods;
 import model.User;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pageobject.ShopMainPage;
 import pageobject.SignInPage;
+import service.GoodsCreator;
 import service.UserCreator;
 
 public class ShopMainPageTest extends CommonConditions {
@@ -22,4 +24,10 @@ public class ShopMainPageTest extends CommonConditions {
         Assert.assertEquals(checked,"1");
     }
 
+    @Test
+    public void checkAmountOfGoods() {
+        Goods goods = GoodsCreator.withCredentialsFromProperty();
+        String actual = new ShopMainPage(driver).openPage().getActualAmountOfGoods(goods.getAmount());
+        Assert.assertNotEquals(actual, "999");
+    }
 }

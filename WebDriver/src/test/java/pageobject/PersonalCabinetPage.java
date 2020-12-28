@@ -7,18 +7,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import wait.CustomWaits;
 
-public class PersonalCabinet extends AbstractPage {
+public class PersonalCabinetPage extends AbstractPage {
 
     private final Logger logger = LogManager.getRootLogger();
     private User user;
 
-    public PersonalCabinet(WebDriver driver, User user) {
+    public PersonalCabinetPage(WebDriver driver, User user) {
         super(driver);
         this.user = user;
     }
 
     @Override
-    public PersonalCabinet openPage(){
+    public PersonalCabinetPage openPage(){
         SignInPage signIn = new SignInPage(driver);
         signIn.openPage();
         signIn.signIn(user.getEmail(), user.getPassword());

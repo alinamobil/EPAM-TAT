@@ -29,7 +29,7 @@ public class SignInPage extends AbstractPage{
     @FindBy(xpath = "//*[@id=\"register-default_btn\"]" + "[@class='btn btn__orange btn__xl btn__widest js_submit_form']")
     private WebElement submitRegistration;
 
-    @FindBy(id = "close-btn")
+    @FindBy(xpath = "//*[@id=\"register-default_btn\"]")
     private WebElement bannerButton;
 
     @FindBy(xpath = "//*[@id=\"register-email\"]")
